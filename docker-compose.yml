@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+    redis:
+        image: redis:6.2-alpine
+        ports:
+            - 6379:6379
+        command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+        networks:
+            - redis
+
+    mongodb:
+        image: mongo:5.0.6
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodb:/data/db
+        networks:
+            - mongodb
+
+    api:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        environment:
+            - MONGODB_URL=${MONGODB_URL}
+            - NODE_ENV=${NODE_ENV}
+            - JWT_SECRET=${JWT_SECRET}
+            - REDIS_HOST=${REDIS_HOST}
+            - REDIS_PORT=${REDIS_PORT}
+            - REDIS_PASSWORD=${REDIS_PASSWORD}
+        ports:
+            - '3000:3000'
+        depends_on:
+            - redis
+            - mongodb
+        volumes:
+            - api:/usr/src/radioju-api
+            - storage:/usr/src/radioju-api/storage
+        networks:
+            - api
+            - redis
+            - mongodb
+        command: yarn start
+
+volumes:
+    api:
+        driver: local
+    storage:
+        driver: local
+        name: radioju-storage
+    mongodb:
+        driver: local
+
+networks:
+    api:
+        driver: bridge
+        name: nginx-bridge
+    redis:
+        driver: ipvlan
+    mongodb:
+        driver: ipvlan
+
