@@ -1,17 +1,17 @@
-const express = require('express');
-const locationModel = require('../models/location');
+const express = require('express')
+const locationModel = require('../models/location')
 
-const router = express.Router();
+const router = express.Router()
 
 router.get('/', async (req, res) => {
   await locationModel
     .find({})
     .populate([{ path: 'countries' }])
     .then(async (locations) => {
-      res.json(locations);
+      res.json(locations)
     })
-    .catch((err) => console.info(err));
-});
+    .catch((err) => console.info(err))
+})
 
 router.get('/:id', async (req, res) => {
   await locationModel
@@ -20,9 +20,9 @@ router.get('/:id', async (req, res) => {
     })
     .populate([{ path: 'countries' }])
     .then((location) => {
-      res.json(location);
+      res.json(location)
     })
-    .catch((err) => console.info(err));
-});
+    .catch((err) => console.info(err))
+})
 
-module.exports = router;
+module.exports = router

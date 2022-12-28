@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const stationSchema = mongoose.Schema(
   {
@@ -9,8 +9,8 @@ const stationSchema = mongoose.Schema(
     locations: [{ type: mongoose.Types.ObjectId, ref: 'Location' }],
   },
   { versionKey: false }
-);
+)
 
-const Station = mongoose.model('Station', stationSchema);
+const Station = mongoose.model('Station', stationSchema)
 
-module.exports = Station;
+module.exports = Station

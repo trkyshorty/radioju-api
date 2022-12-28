@@ -12,10 +12,10 @@
     "dev": "cross-env NODE_ENV=development node -r dotenv/config ./src/bin/www",
     "docker:prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up",
     "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
-    "eslint": "eslint .",
-    "eslint:fix": "eslint --fix .",
-    "prettier": "prettier --check **/*.js",
-    "prettier:fix": "prettier --write **/*.js"
+    "eslint": "eslint src/*.js src/**/*.js",
+    "eslint:fix": "eslint --fix src/*.js src/**/*.js",
+    "prettier": "prettier --check src/*.js src/**/*.js",
+    "prettier:fix": "prettier --write src/*.js src/**/*.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
