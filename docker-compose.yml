@@ -36,7 +36,7 @@ services:
             - mongodb
         volumes:
             - api:/usr/src/radioju-api
-            - storage:/usr/src/radioju-api/storage
+            - ./storage:/usr/src/radioju-api/storage
         networks:
             - api
             - redis
@@ -45,9 +45,6 @@ services:
 volumes:
     api:
         driver: local
-    storage:
-        driver: local
-        name: radioju-storage
     mongodb:
         driver: local
 
