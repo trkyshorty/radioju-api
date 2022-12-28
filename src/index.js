@@ -34,16 +34,14 @@ app.use('/image', express.static(path.resolve('./storage/image')))
 
 app.set('trust proxy', true)
 
-mongoose.connect(`${process.env.MONGODB_URL}`).then(() => {
+mongoose.connect(process.env.MONGODB_URL, { user: process.env.USERNAME, password: process.env.MONGODB_PASSWORD, auth: { authSource: 'myDatabase' }}).then(() => {
   app.use(
     '/auth/login',
     rateLimit({
       windowMs: 15 * 60 * 1000,
       max: 5,
       message: {
-        error: {
-          text: 'Too many failed login attempts, please try again later',
-        },
+        error: { text: 'Too many failed login attempts, please try again later' },
       },
       standardHeaders: true,
       legacyHeaders: false,
@@ -57,11 +55,7 @@ mongoose.connect(`${process.env.MONGODB_URL}`).then(() => {
     rateLimit({
       windowMs: 60 * 60 * 1000,
       max: 5,
-      message: {
-        error: {
-          text: 'Too many create account attempts, please try again later',
-        },
-      },
+      message: { error: { text: 'Too many create account attempts, please try again later' } },
       standardHeaders: true,
       legacyHeaders: false,
     }),
