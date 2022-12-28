@@ -35,11 +35,7 @@ app.use('/image', express.static(path.resolve('./storage/image')))
 app.set('trust proxy', true)
 
 mongoose
-  .connect(process.env.MONGODB_URL, {
-    user: process.env.USERNAME,
-    password: process.env.MONGODB_PASSWORD,
-    auth: { authSource: 'admin' },
-  })
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     app.use(
       '/auth/login',
