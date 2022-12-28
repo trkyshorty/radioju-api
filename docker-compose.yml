@@ -41,7 +41,6 @@ services:
             - api
             - redis
             - mongodb
-        command: yarn start
 
 volumes:
     api:
