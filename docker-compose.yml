@@ -54,6 +54,7 @@ volumes:
 networks:
     api:
         driver: bridge
+        name: nginx-bridge
     redis:
         driver: ipvlan
     mongodb:
