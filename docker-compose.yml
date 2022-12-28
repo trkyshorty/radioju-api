@@ -50,7 +50,7 @@ volumes:
 
 networks:
     api:
-        driver: local
+        driver: bridge
     redis:
         driver: ipvlan
     mongodb:
