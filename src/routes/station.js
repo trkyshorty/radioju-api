@@ -5,7 +5,7 @@ const countryModel = require('../models/country');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const { country } = req.query;
+  const { country, sort } = req.query;
 
   let findPattern = {};
 
@@ -21,8 +21,20 @@ router.get('/', async (req, res) => {
     };
   }
 
-  await stationModel
-    .find(findPattern)
+  const stationList = stationModel.find(findPattern);
+
+  switch (sort) {
+    case 'asc':
+      stationList.sort({ title: 'asc' });
+      break;
+    case 'desc':
+      stationList.sort({ title: 'desc' });
+      break;
+    default:
+      break;
+  }
+
+  stationList
     .populate([
       {
         path: 'genres',
