@@ -34,44 +34,56 @@ app.use('/image', express.static(path.resolve('./storage/image')))
 
 app.set('trust proxy', true)
 
-mongoose.connect(process.env.MONGODB_URL, { user: process.env.USERNAME, password: process.env.MONGODB_PASSWORD, auth: { authSource: 'myDatabase' }}).then(() => {
-  app.use(
-    '/auth/login',
-    rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 5,
-      message: {
-        error: { text: 'Too many failed login attempts, please try again later' },
-      },
-      standardHeaders: true,
-      legacyHeaders: false,
-      skipSuccessfulRequests: true,
-    }),
-    authLoginRouter
-  )
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    user: process.env.USERNAME,
+    password: process.env.MONGODB_PASSWORD,
+    auth: { authSource: 'admin' },
+  })
+  .then(() => {
+    app.use(
+      '/auth/login',
+      rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 5,
+        message: {
+          error: {
+            text: 'Too many failed login attempts, please try again later',
+          },
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+        skipSuccessfulRequests: true,
+      }),
+      authLoginRouter
+    )
 
-  app.use(
-    '/auth/register',
-    rateLimit({
-      windowMs: 60 * 60 * 1000,
-      max: 5,
-      message: { error: { text: 'Too many create account attempts, please try again later' } },
-      standardHeaders: true,
-      legacyHeaders: false,
-    }),
-    authRegisterRouter
-  )
+    app.use(
+      '/auth/register',
+      rateLimit({
+        windowMs: 60 * 60 * 1000,
+        max: 5,
+        message: {
+          error: {
+            text: 'Too many create account attempts, please try again later',
+          },
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+      }),
+      authRegisterRouter
+    )
 
-  app.use('/station', stationRouter)
-  app.use('/genre', genreRouter)
-  app.use('/country', countryRouter)
-  app.use('/location', locationRouter)
+    app.use('/station', stationRouter)
+    app.use('/genre', genreRouter)
+    app.use('/country', countryRouter)
+    app.use('/location', locationRouter)
 
-  app.get('/tools/ip', adminMiddleware, (req, res) => res.send(req.ip))
-  app.use('/admin/station', adminMiddleware, adminStationRouter)
-  app.use('/admin/genre', adminMiddleware, adminGenreRouter)
-  app.use('/admin/country', adminMiddleware, adminCountryRouter)
-  app.use('/admin/location', adminMiddleware, adminLocationRouter)
-})
+    app.get('/tools/ip', adminMiddleware, (req, res) => res.send(req.ip))
+    app.use('/admin/station', adminMiddleware, adminStationRouter)
+    app.use('/admin/genre', adminMiddleware, adminGenreRouter)
+    app.use('/admin/country', adminMiddleware, adminCountryRouter)
+    app.use('/admin/location', adminMiddleware, adminLocationRouter)
+  })
 
 module.exports = app
