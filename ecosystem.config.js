@@ -3,9 +3,11 @@ module.exports = {
     {
       name: 'radioju-api',
       script: 'src/bin/www',
-      watch: false,
+      instances: 1,
       autorestart: true,
-      time: false,
+      watch: false,
+      time: true,
+      node_args: '--require dotenv/config',
       env: {
         NODE_ENV: 'production',
       },
