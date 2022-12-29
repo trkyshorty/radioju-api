@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
-    const { title, url, img, countries, genres } = req.body;
+    const { url, img } = req.body;
 
     const oldStation = await stationModel.findOne({ url });
 
@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: { text: 'Station already exist' } });
     }
 
-    await stationModel.create({ title, url, countries, genres }).then((station) => {
+    await stationModel.create(req.body).then((station) => {
       Jimp.read(img)
         .then((imageData) => {
           imageData.write(path.resolve(`./storage/image/station/${station._id}.png`));
@@ -33,9 +33,9 @@ router.post('/', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   try {
-    const { title, url, img, countries, genres } = req.body;
+    const { img } = req.body;
     await stationModel
-      .findOneAndUpdate({ _id: req.params.id }, { title, url, countries, genres }, { upsert: false })
+      .findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: false })
       .then((station) => {
         Jimp.read(img)
           .then((imageData) => {

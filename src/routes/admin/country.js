@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
-    const { title, code } = req.body;
+    const { title } = req.body;
 
     const oldCountry = await countryModel.findOne({ title });
 
@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: { text: 'Country already exist' } });
     }
 
-    await countryModel.create({ title, code }).then(async (addedCountry) => {
+    await countryModel.create(req.body).then(async (addedCountry) => {
       res.json({ message: 'Country added!' });
 
       // Country add to all genres
