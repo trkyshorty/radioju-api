@@ -3,6 +3,7 @@ const rateLimit = require('express-rate-limit')
 const path = require('path')
 const logger = require('morgan')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 // const userMiddleware = require('./middleware/user');
 const adminMiddleware = require('./middleware/admin')
@@ -15,6 +16,8 @@ const adminGenreRouter = require('./routes/admin/genre')
 const adminCountryRouter = require('./routes/admin/country')
 const adminLocationRouter = require('./routes/admin/location')
 
+const contactRouter = require('./routes/contact')
+
 const stationRouter = require('./routes/station')
 const genreRouter = require('./routes/genre')
 const countryRouter = require('./routes/country')
@@ -24,6 +27,7 @@ const app = express()
 
 app.use(logger(process.env.NODE_ENV === 'development' ? 'dev' : 'combined'))
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.resolve('./public')))
@@ -69,6 +73,20 @@ mongoose
       }),
       authRegisterRouter
     )
+
+    app.use('/contact',
+      rateLimit({
+        windowMs: 60 * 60 * 1000,
+        max: 3,
+        message: {
+          error: {
+            text: 'Too many contact request, please try again later',
+          },
+        },
+        standardHeaders: true,
+        legacyHeaders: false,
+      }),
+      contactRouter)
 
     app.use('/station', stationRouter)
     app.use('/genre', genreRouter)
