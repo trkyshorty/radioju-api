@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const genreSchema = mongoose.Schema(
   {
@@ -6,8 +6,8 @@ const genreSchema = mongoose.Schema(
     countries: [{ type: mongoose.Types.ObjectId, ref: 'Country' }],
   },
   { versionKey: false }
-);
+)
 
-const Genre = mongoose.model('Genre', genreSchema);
+const Genre = mongoose.model('Genre', genreSchema)
 
-module.exports = Genre;
+module.exports = Genre

@@ -36,26 +36,21 @@ services:
             - mongodb
         volumes:
             - api:/usr/src/radioju-api
-            - storage:/usr/src/radioju-api/storage
+            - ./storage:/usr/src/radioju-api/storage
         networks:
             - api
             - redis
             - mongodb
-        command: yarn start
 
 volumes:
     api:
         driver: local
-    storage:
-        driver: local
-        name: radioju-storage
     mongodb:
         driver: local
 
 networks:
     api:
         driver: bridge
-        name: nginx-bridge
     redis:
         driver: ipvlan
     mongodb:

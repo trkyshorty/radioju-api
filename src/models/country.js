@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const countrySchema = mongoose.Schema(
   {
@@ -9,8 +9,8 @@ const countrySchema = mongoose.Schema(
     countryPhoneCode: String,
   },
   { versionKey: false }
-);
+)
 
-const Country = mongoose.model('Country', countrySchema);
+const Country = mongoose.model('Country', countrySchema)
 
-module.exports = Country;
+module.exports = Country
