@@ -28,9 +28,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.resolve('./public')))
 
-// if (process.env.NODE_ENV === 'development') {
-app.use('/image', express.static(path.resolve('./storage/image')))
-// }
+if (process.env.NODE_ENV === 'development') {
+  app.use('/image', express.static(path.resolve('./storage/image')))
+}
 
 app.set('trust proxy', true)
 
