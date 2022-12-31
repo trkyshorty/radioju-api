@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         expiresIn: '30d',
       });
 
-      return res.json({ token });
+      return res.json({ id: user._id, email: user.email, token: token });
     }
 
     res.status(400).send('Invalid Credentials');
